@@ -8,6 +8,7 @@ goodreads.required_shelves_for_library_link
 your_account=YourAccount.new # card info coming from home/.tpl
 your_account.retrieve#_stub # _stub of course is just during testing
 total_checked_out = your_account.checked_out
+# If you don't manage multiple cards comment out the new few lines, otherwise fill in the values
 your_account=nil
 your_account=YourAccount.new("2nd library card", "2nd library card password") # get 2nd card # could I put both in the yaml file instead?
 your_account.retrieve
