@@ -47,3 +47,4 @@ puts "access_token_key:\t#{access_token_key}"
 puts "access_token_secret:\t#{access_token_secret}"
 puts "user_id:\tEDIT THIS MANUALLY. Click your user photo on goodreads and copy the number after /user/show/ and without the -name."
 puts ""
+FileUtils.mkdir "tmp" rescue "ok" # creates the tmp dir as it's ignored by git

@@ -57,7 +57,7 @@ class LibraryDetail
 		response = open("http://www.torontopubliclibrary.ca/detail.jsp?R=#{library_id_to_retrieve}")
 		
 		# save a copy of the response so I can play with it locally... consider caching this stuff
-		aFile = File.new("library_detail_#{library_id_to_retrieve}.html", "w")
+		aFile = File.new("tmp/library_detail_#{library_id_to_retrieve}.html", "w")
 		aFile.write(response.read)
 		aFile.close
 		

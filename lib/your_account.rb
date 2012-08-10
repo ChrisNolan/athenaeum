@@ -49,7 +49,7 @@ class YourAccount
 		}
 
 		# save a copy of the response so I can play with it locally... consider caching this stuff
-		aFile = File.new("login_response.html", "w")
+		aFile = File.new("tmp/login_response.html", "w")
 		aFile.write(@login_response.body)
 		aFile.close
 
