@@ -6,7 +6,8 @@ describe Goodreads do
 		describe "isbn to id" do
 			it "returns book id from isbn" do
 				skip "until we can webmock"
-				Goodreads.book_isbn_to_id("9780672328848").must_equal "4514"
+				goodreads = Goodreads.new
+				goodreads.book_isbn_to_id("9780672328848").must_equal "4514"
 			end
 			it "handles an invalid isbn"
 		end

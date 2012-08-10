@@ -38,7 +38,7 @@ class Goodreads
 		@access_token = OAuth::AccessToken.new(consumer, @access_token_key, @access_token_secret)
 	end
 	
-	def self.book_isbn_to_id(isbn)
+	def book_isbn_to_id(isbn)
 		#sleep 1 # API requires me to not hammer their system
 		begin
 			goodreads_book_id = RestClient.get "http://www.goodreads.com/book/isbn_to_id/#{isbn}?key=#{@developer_key}"
