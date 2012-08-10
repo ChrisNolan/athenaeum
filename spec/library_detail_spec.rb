@@ -54,6 +54,24 @@ describe LibraryDetail do
 				#library_detail.page.css('form#searchForm').size.must_equal 0
 			end
 		end
+		describe "subject headings" do
+			it "returns empty when no subject headings listed"
+			it "returns single item when only one subject heading" do # 121457
+				library_detail = LibraryDetail.retrieve_stub("121457")
+				library_detail.subjects.must_equal ["Humorous stories"]
+			end
+			it "returns array of subject headings" do # 549885
+				library_detail = LibraryDetail.retrieve_stub("549885")
+				library_detail.subjects.size.must_equal 4
+				library_detail.subjects.must_include "Books"
+			end
+			it "returns array of subject headings split with the --" do # 2403521
+				library_detail = LibraryDetail.retrieve_stub("2403521")
+				library_detail.subjects.size.must_equal 4
+				library_detail.subjects.must_include "Jazz"
+				library_detail.subjects.must_include "Juvenile fiction"
+			end
+		end
 	end
 	
 end

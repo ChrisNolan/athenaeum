@@ -71,6 +71,14 @@ describe Goodreads do
 				goodreads.add_to_shelf("test-required-shelf-2", "4514")
 				# TODO actually confirm the given book is on that shelf -- for now I'm just looking on the website
 			end
+			it "adds a book to all the given shelves" do
+				skip "so I don't hit the api when running tests for now"
+				goodreads = Goodreads.new
+				goodreads.add_to_shelf(["ruby", "ruby (computer programming language)", "athenaeum-test"], "4514")
+				shelves = goodreads.shelf_names_by_book("4514")
+				shelves.must_include "athenaeum-test"
+				shelves.must_include "ruby-computer-programming-language"
+			end
 		end
 	end
 end

@@ -4,16 +4,22 @@ require 'nokogiri'
 
 class LibraryDetail
 
-	attr_reader :library_id, :page, :isbn, :isbns
+	attr_reader :library_id, :page, :isbn, :isbns, :subjects
 	
 	def initialize(library_id, page)
 		@library_id = library_id
 		@page = page
+		@subjects = []
 		parse_page
 	end
 	
 	def parse_page
 		# TODO get the title from the h1.align-top minus the span.title_edition_results
+		parse_isbns
+		parse_subjects
+	end
+	
+	def parse_isbns
 		isbn_rows = @page.css('tr.isbn')
 		@isbns = []
 		if isbn_rows.size > 1
@@ -32,6 +38,18 @@ class LibraryDetail
 			@isbn = isbn_text[0,10] if @isbn.length < 10
 			@isbns << @isbn
 		end
+	end
+	
+	def parse_subjects
+		related_subjects = @page.search('div#related-subjects li a')
+		related_subjects.each do |subject_link|
+			subject_link_text = subject_link.text
+			subject_link_text.chomp!(".")
+			subject_link_text.split("--").each do |subject_text|
+				@subjects << subject_text.strip
+			end
+		end
+		@subjects.uniq!
 	end
 	
 	def self.retrieve(library_id_to_retrieve)

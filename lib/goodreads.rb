@@ -99,13 +99,17 @@ class Goodreads
 		shelves.each {|shelf| add_shelf(shelf) unless shelf_names.include?(shelf)}
 	end
 	
-	def add_to_shelf(name, book_id)
-		sleep 1 # API requires me not to hammer their system
-		response = @access_token.post('/shelf/add_to_shelf.xml ', { 
-             'name' => name, 
-             'book_id' => book_id, 
-           })
-		# TODO check the response code
+	def add_to_shelf(names, book_id)
+		# TODO remove any duplicates from the shelves it's already on to avoid the extra api calls
+		names = [names] if names.kind_of? String
+		names.each do |name|
+			sleep 0.1 # API requires me not to hammer their system sleep 1
+			response = @access_token.post('/shelf/add_to_shelf.xml ', { 
+				 'name' => name, 
+				 'book_id' => book_id, 
+			   })
+			# TODO check the response code
+		end
 	end
 	
 	def required_shelves_for_library_link
