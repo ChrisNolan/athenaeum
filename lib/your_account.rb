@@ -23,6 +23,9 @@ class YourAccount
 		end
 		raise "Library Card # required" if @library_card.nil?
 		raise "Library PIN required" if @library_password.nil?
+		# if @library_card/password has a comma in it, split it apart and just take the first one
+		@library_card = @library_card.to_s.split(',').map(&:strip).first
+		@library_password = @library_password.to_s.split(',').map(&:strip).first
 	end
 	
 	def connect
