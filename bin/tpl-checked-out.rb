@@ -22,8 +22,8 @@ checked_out.each do |checkout|
 		shelf_names_by_book = goodreads.shelf_names_by_book(goodreads_book_id)
 		shelves << 'to-read' if shelf_names_by_book.empty? # in theory if it's just checked out I haven't read it yet, and the default goodreads action when I add a never seen book before to another shelf is to also add it to the 'read' shelf.  
 		shelves << 'checked-out'
-		shelves << "checked-out-#{Time.now.year}"
-		#goodreads.add_to_shelf "checked-out-#{Time.now.year}-#{Time.now.month}", goodreads_book_id # track what was checked out each month... but first add check to walk back 3 weeks from the renew date so it doesn't fill multiple months un-necessarily
+		shelves << "checked-out-#{checkout.checked_out_date.year}"
+		shelves << "checked-out-#{checkout.checked_out_date.year}-#{checkout.checked_out_date.month}", goodreads_book_id # track what was checked out each month...
 		shelves << 'currently-checked-out'
 		goodreads.add_to_shelf shelves, goodreads_book_id
 	else

@@ -4,7 +4,7 @@ require "nokogiri"
 class Checkout
 	attr_accessor :title, :library_id, :local_format, :renew_count, :due_date, :unparsed_extra_detail
 	
-	def initialize(title, library_id="", local_format="", renew_count="", due_date="")
+	def initialize(title, library_id="", local_format="", renew_count=0, due_date=nil)
 		@title = title
 		@library_id = library_id
 		@local_format = local_format
@@ -22,6 +22,11 @@ class Checkout
 		@library_id = right if right
 	end
 	
+	def checked_out_date
+		# lots of assumptions -- 21 days per check out, and renewed on the date it was due
+		due_date - ((renew_count+1)*21)
+	end
+	
 	def self.parse_from_html(row)
 		columns = row.css "td"
 		input_field = columns[0] % "input"
@@ -36,9 +41,16 @@ class Checkout
 			title = "Uncatalogued"
 		end
 		local_format = (columns[1] % "em").children.first.to_s
-		c = Checkout.new(title,"",local_format)
+		due_date = parse_due_date_field(columns[3].inner_text.strip)
+		c = Checkout.new(title,"",local_format,columns[2].inner_text.to_i,due_date)
 		c.href=href if href
 		c.unparsed_extra_detail = unparsed_extra_detail
 		c
+	end
+	
+	def self.parse_due_date_field(due_date_field)
+		raw_due_date,raw_time = due_date_field.split ','
+		day, month, year = raw_due_date.split '/'
+		due_date = Date.new(year.to_i, month.to_i, day.to_i)
 	end
 end

@@ -48,8 +48,15 @@ describe Checkout do
 		it "has a local format" do
 			@checkout.local_format.must_equal "Book"
 		end
-		it "has the renew count"
-		it "has the renew date"
+		it "has the renew count" do
+			@checkout.renew_count.must_equal 2
+		end
+		it "has the due date" do
+			@checkout.due_date.to_s.must_equal Date.new(2012,8,15).to_s
+		end
+		it 'estimates when the item was checked out' do
+			@checkout.checked_out_date.to_s.must_equal Date.new(2012,6,13).to_s
+		end
 		it "has unparsed extra detail" do
 			@checkout.unparsed_extra_detail.must_equal "RENEW^37131121201545^621.8 ROB^1^Roberts, Dustyn.^Making things move : DIY mechanisms for inventors, hobbyists, and artists^"
 		end
