@@ -18,7 +18,7 @@ The scripts and program libraries are written in [Ruby (v1.9.3)](http://www.ruby
 
 After those are installed, manually:
 * Copy the tpl.yml.example file to your home directory and name it .tpl; edit it with your values.  If you manage multiple cards, seperate them with commas.
-* Run the 'oauth_setup.rb' script in the project directory (i.e. "ruby oauth_setup.rb") and follow the prompts to create your HOME/.goodreads yaml config file.
+* Run the 'bin/oauth_setup.rb' script from the project directory (i.e. "ruby bin/oauth_setup.rb") and follow the prompts to create your HOME/.goodreads yaml config file.
 
 ### Tests
 
@@ -26,7 +26,7 @@ To run the tests, do a 'rake test' from the project directory.  Note: for now ma
 
 ### Regular use
 
-Just do a "ruby tpl-checked-out.rb" and it'll pull down your checked out items and push them over to goodreads for you.  
+Just do a "ruby bin/tpl-checked-out.rb" and it'll pull down your checked out items and push them over to goodreads for you.  
 Then goto your "Bookshelves" on Goodreads and you'll see the "checked-out" shelf.
 
 Known Issues
