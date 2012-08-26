@@ -70,7 +70,8 @@ describe Goodreads do
 				skip "so I don't hit the api when running my test for now"
 				goodreads = Goodreads.new
 				goodreads.add_to_shelf("test-required-shelf-2", "4514")
-				# TODO actually confirm the given book is on that shelf -- for now I'm just looking on the website
+				goodreads.shelf_names_by_book("4514").must_include "test-required-shelf-2"
+				goodreads.remove_from_shelf("test-required-shelf-2", "4514")
 			end
 			it "adds a book to all the given shelves" do
 				skip "so I don't hit the api when running tests for now"
@@ -79,6 +80,36 @@ describe Goodreads do
 				shelves = goodreads.shelf_names_by_book("4514")
 				shelves.must_include "athenaeum-test"
 				shelves.must_include "ruby-computer-programming-language"
+			end
+		end
+		describe "remove from shelves" do
+			it 'removes a book from a given shelf' do
+				skip "so I don't hit the api when running my test for now"
+				goodreads = Goodreads.new
+				goodreads.add_to_shelf("test-required-shelf-2", "4514")
+				goodreads.shelf_names_by_book("4514").must_include "test-required-shelf-2"
+				goodreads.remove_from_shelf("test-required-shelf-2", "4514")
+				goodreads.shelf_names_by_book("4514").wont_include "test-required-shelf-2"
+			end
+			it 'gets list of books on a shelf' do
+				skip "so I don't hit the api when running my test for now"
+				goodreads = Goodreads.new
+				goodreads.add_to_shelf("test-required-shelf-2", "4514")
+				goodreads.add_to_shelf("test-required-shelf-2", "285679")
+				books = goodreads.book_ids_on_shelf('test-required-shelf-2')
+				books.size.must_equal 2
+				books.must_include 4514
+				goodreads.remove_from_shelf("test-required-shelf-2", "4514")
+				goodreads.remove_from_shelf("test-required-shelf-2", "285679")
+			end
+			it 'removes all books from a given shelf' do
+				skip "so I don't hit the api when running my test for now"
+				goodreads = Goodreads.new
+				goodreads.add_to_shelf("test-required-shelf-2", "4514")
+				goodreads.add_to_shelf("test-required-shelf-2", "285679")
+				goodreads.empty_shelf('test-required-shelf-2')
+				books = goodreads.book_ids_on_shelf('test-required-shelf-2')
+				books.size.must_equal 0
 			end
 		end
 	end

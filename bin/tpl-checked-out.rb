@@ -2,11 +2,17 @@ load"lib/your_accounts.rb"
 load"lib/library_detail.rb"
 load"lib/goodreads.rb"
 
+puts "Connecting to Goodreads..."
 goodreads = Goodreads.new
 goodreads.required_shelves_for_library_link
+puts "Clearing 'currently-checked-out'..."
+goodreads.empty_shelf('currently-checked-out')
 
 your_accounts=YourAccounts.new # card info coming from home/.tpl
-your_accounts.checked_out.each do |checkout|
+puts "Retrieving account info..."
+checked_out = your_accounts.checked_out
+puts "Processing #{checked_out.size} items..."
+checked_out.each do |checkout|
 	next unless checkout.local_format == "Book" # skip DVDs and CDs and magazines etc
 	library_detail = LibraryDetail.retrieve_stub(checkout.library_id) # _stub for testing
 	goodreads_book_id = goodreads.book_isbn_to_id library_detail.isbn
@@ -18,6 +24,7 @@ your_accounts.checked_out.each do |checkout|
 		shelves << 'checked-out'
 		shelves << "checked-out-#{Time.now.year}"
 		#goodreads.add_to_shelf "checked-out-#{Time.now.year}-#{Time.now.month}", goodreads_book_id # track what was checked out each month... but first add check to walk back 3 weeks from the renew date so it doesn't fill multiple months un-necessarily
+		shelves << 'currently-checked-out'
 		goodreads.add_to_shelf shelves, goodreads_book_id
 	else
 		puts " *** Unable to get BookID for #{checkout.title}"

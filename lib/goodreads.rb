@@ -99,7 +99,7 @@ class Goodreads
 		shelves.each {|shelf| add_shelf(shelf) unless shelf_names.include?(shelf)}
 	end
 	
-	def add_to_shelf(names, book_id)
+	def add_to_shelf(names, book_id, a=nil)
 		# TODO remove any duplicates from the shelves it's already on to avoid the extra api calls
 		names = [names] if names.kind_of? String
 		names.each do |name|
@@ -107,9 +107,42 @@ class Goodreads
 			response = @access_token.post('/shelf/add_to_shelf.xml ', { 
 				 'name' => name, 
 				 'book_id' => book_id, 
+				 'a' => a,
 			   })
 			# TODO check the response code
 		end
+	end
+	
+	def remove_from_shelf(names, book_id)
+		add_to_shelf(names, book_id, 'remove')
+	end
+	
+	def empty_shelf(shelf)
+		books = book_ids_on_shelf(shelf)
+		books.each do |book_id|
+			remove_from_shelf(shelf, book_id)
+		end
+	end
+	
+	def book_ids_on_shelf(shelf)
+		# http://www.goodreads.com/api#reviews.list
+		response = @access_token.post("/review/list/#{@user_id}.xml", { 
+			 'v' => '2', 
+			 'shelf' => shelf,
+			 'per_page' => 200,
+		   })
+		hash = Hash.from_xml(response.body)[:GoodreadsResponse]
+		hash.delete(:Request)
+		reviews_list = hash
+		book_ids = []
+		if reviews_list[:reviews].kind_of? Hash
+			# TODO test to make sure the <reviews total="x"> (reviews_list[:reviews][:attributes][:total) isn't higher than I asked for -- otherwise will have to retrieve multiple pages worth
+			reviews = reviews_list[:reviews][:review]
+			reviews.each do |review|
+				book_ids << review[:book][:id]
+			end
+		end
+		book_ids
 	end
 	
 	def required_shelves_for_library_link
