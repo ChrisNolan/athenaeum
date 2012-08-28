@@ -16,8 +16,12 @@ The scripts and program libraries are written in [Ruby (v1.9.3)](http://www.ruby
 * [oauth](http://rubygems.org/gems/oauth) (0.4.6)
 * [rest-client](https://rubygems.org/gems/rest-client) (1.6.7)
 
-After those are installed, manually:
-* Copy the tpl.yml.example file to your home directory and name it .tpl; edit it with your values.  If you manage multiple cards, seperate them with commas.
+From a [command prompt](http://en.wikipedia.org/wiki/Command_line_interface#Command_prompt): "gem install --no-rdoc --no-ri nokogiri oauth rest-client"
+
+You then need a copy of the project on your system.  On the project page, there are the options to: clone, zip or http/ssh/read-only.  If you're going to want to stay updated, then you want to check it out with git.  If you don't have those tools and just want to get started, download the zip.  If you're going to be contributing back to the project, fork/clone it and away you go.
+
+After those are installed, open a command prompt again, change to the project directory and manually:
+* Copy the tpl.yml.example file to your home directory and name it .tpl; edit it with your values.  If you manage multiple cards, seperate them with commas (match up the passwords with commas too).
 * Run the 'bin/oauth_setup.rb' script from the project directory (i.e. "ruby bin/oauth_setup.rb") and follow the prompts to create your HOME/.goodreads yaml config file.
 
 ### Tests
@@ -26,8 +30,8 @@ To run the tests, do a 'rake test' from the project directory.  Note: for now ma
 
 ### Regular use
 
-Just do a "ruby bin/tpl-checked-out.rb" and it'll pull down your checked out items and push them over to goodreads for you.  
-Then goto your "Bookshelves" on Goodreads and you'll see the "checked-out" shelf.
+Just do a "ruby bin/tpl-checked-out.rb" from the project directory via a command prompt and it'll pull down your checked out items and push them over to goodreads for you.  
+Then goto your "Bookshelves" on Goodreads and you'll see the "checked-out" shelf (another with a bunch of others like 'currently-checked-out' and shelves per subject of the books.
 
 Known Issues
 ------------
